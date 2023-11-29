@@ -1,0 +1,4 @@
+These are the rules section.
+For each pattern defined earlier, there's a corresponding action to be taken when a match is found.
+The action is enclosed in curly braces.
+For example, if a binary number is matched, it will print "Binary: " followed by the matched text.
