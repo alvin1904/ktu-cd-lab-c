@@ -1,15 +1,19 @@
 Certainly! Regular expressions (regex or regexp) are powerful tools for pattern matching and text manipulation. They are used in various programming languages and tools, including lex/flex, grep, sed, and many others. Let's break down the basic components and syntax of regular expressions:
 
 1. **Literal Characters:**
+
    - Literal characters match themselves. For example, the regular expression `abc` matches the string "abc" in the input.
 
 2. **Character Classes:**
+
    - Square brackets (`[]`) define a character class. For example, `[aeiou]` matches any one of the vowels.
 
 3. **Ranges:**
+
    - Inside a character class, you can specify a range using a hyphen (`-`). For example, `[0-9]` matches any digit.
 
 4. **Quantifiers:**
+
    - Quantifiers specify how many times a character or group should be repeated.
      - `*`: Match 0 or more times.
      - `+`: Match 1 or more times.
@@ -19,13 +23,16 @@ Certainly! Regular expressions (regex or regexp) are powerful tools for pattern 
      - `{n,m}`: Match between n and m times.
 
 5. **Anchors:**
+
    - `^`: Matches the beginning of a line.
    - `$`: Matches the end of a line.
 
 6. **Escape Characters:**
+
    - Backslash (`\`) is used to escape a special character, allowing you to match it literally. For example, `\.` matches a literal period.
 
 7. **Alternation:**
+
    - The pipe symbol (`|`) represents alternation. For example, `cat|dog` matches either "cat" or "dog".
 
 8. **Grouping:**
@@ -38,6 +45,7 @@ Now, let's create a simple regular expression example for matching a floating-po
 ```
 
 Explanation:
+
 - `^`: Start of the line.
 - `[-+]?`: An optional sign.
 - `[0-9]*`: Zero or more digits.
