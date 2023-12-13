@@ -1,111 +1,167 @@
-Certainly! Let's go through the provided C code step by step:
+### Code Explanation:
 
-```c
-#include"stdio.h"
-#include"string.h"
-#include"stdlib.h"
-#include"ctype.h"
-```
+1. **Header Files:**
 
-This section includes necessary C libraries for input/output, string manipulation, memory allocation, and character type checking.
+   ```c
+   #include <stdio.h>
+   #include <string.h>
+   #include <ctype.h>
+   ```
 
-```c
-char ip_sym[15], ip_ptr = 0, op[50], tmp[50];
-```
+   The code includes standard C libraries for input/output, string manipulation, and character handling.
 
-This declares character arrays `ip_sym` (input symbol), `op` (output string), and `tmp` (temporary string). `ip_ptr` is a variable to keep track of the current position in the input symbol.
+2. **Global Variables and Function Prototypes:**
 
-```c
-void e_prime();
-void e();
-void t_prime();
-void t();
-void f();
-void advance();
-int n = 0;
-```
+   ```c
+   char input[20];
+   int i, error;
+   void E();
+   void T();
+   void Eprime();
+   void TPrime();
+   void F();
+   ```
 
-These are function prototypes for functions used in the program.
+   - `input`: Array to store the arithmetic expression.
+   - `i`: Index used to traverse the input.
+   - `error`: Flag to indicate if an error is encountered.
+   - Function prototypes for different parts of the grammar.
 
-```c
-void e() {
-    strcpy(op, "TE'");
-    printf("E=%-25s", op);
-    printf("E->TE'\n");
-    t();
-    e_prime();
-}
-```
+3. **Grammar Definition:**
 
-The function `e` represents the production rule `E -> TE'`. It initializes the output string `op`, prints the production rule, and then calls functions `t()` and `e_prime()`.
+   ```c
+   // Grammar for arithmetic expressions
+   // E->TE'
+   // E'->+TE'| epsilon
+   // T->FT'
+   // T'->*FT'| epsilon
+   // F->(E)|id
+   ```
 
-```c
-void e_prime() {
-    int i, n = 0, l;
-    // ...
-}
-```
+   Describes the context-free grammar for arithmetic expressions.
 
-The function `e_prime` represents the production rules `E' -> +TE' | e`. It manipulates the output string based on the next symbol in the input.
+4. **Main Function:**
 
-```c
-void t() {
-    int i, n = 0, l;
-    // ...
-}
-```
+   ```c
+   int main()
+   {
+       i = 0;
+       error = 0;
+       printf("Enter the arithmetic expression without whitespaces: ");
+       scanf("%s[^\n]", input);
+       E();
+       if (strlen(input) == i && error == 0)
+           printf("Accepted...\n");
+       else
+           printf("Rejected...\n");
+   }
+   ```
 
-The function `t` represents the production rule `T -> FT'`. It manipulates the output string based on the next symbol in the input and calls functions `f()` and `t_prime()`.
+   - Initializes `i` and `error`.
+   - Takes an arithmetic expression as input.
+   - Calls the `E` function.
+   - Checks if the entire input is consumed and no errors are encountered.
 
-```c
-void t_prime() {
-    int i, n = 0, l;
-    // ...
-}
-```
+5. **Non-Terminal Functions:**
 
-The function `t_prime` represents the production rules `T' -> *FT' | e`. It manipulates the output string based on the next symbol in the input.
+   - **E():**
 
-```c
-void f() {
-    int i, n = 0, l;
-    // ...
-}
-```
+     ```c
+     void E()
+     {
+         T();
+         Eprime();
+     }
+     ```
 
-The function `f` represents the production rule `F -> (E) | i`. It manipulates the output string based on the next symbol in the input.
+     Represents the non-terminal E in the grammar.
 
-```c
-void advance() {
-    ip_ptr++;
-}
-```
+   - **Eprime():**
 
-The function `advance` increments the input pointer `ip_ptr`.
+     ```c
+     void Eprime()
+     {
+         if (input[i] == '+' || input[i] == '-')
+         {
+             i++;
+             T();
+             Eprime();
+         }
+     }
+     ```
 
-```c
-void main() {
-    int i;
-    // ...
-}
-```
+     Represents the non-terminal E' in the grammar.
 
-The `main` function is the starting point of the program. It initializes the input string `ip_sym`, prints the grammar rules, and then calls the function `e()` to start the parsing process.
+   - **T():**
 
-```c
-printf("\n Enter the input expression:");
-scanf("%s", ip_sym);
-```
+     ```c
+     void T()
+     {
+         F();
+         Tprime();
+     }
+     ```
 
-This prompts the user to enter an input expression and reads it into the `ip_sym` array.
+     Represents the non-terminal T in the grammar.
 
-```c
-e();
-for (i = 0; i < strlen(ip_sym); i++) {
-    // ...
-}
-```
+   - **Tprime():**
 
-This loop processes the input symbols and calls the `e` function for each symbol, printing the current state of the output string.
+     ```c
+     void Tprime()
+     {
+         if (input[i] == '*' || input[i] == '/')
+         {
+             i++;
+             F();
+             Tprime();
+         }
+     }
+     ```
 
-This program appears to be an implementation of a predictive parsing algorithm for a simple grammar without left recursion. It uses a set of production rules to generate a sequence of production rules based on the input expression.
+     Represents the non-terminal T' in the grammar.
+
+   - **F():**
+     ```c
+     void F()
+     {
+         if (isalnum(input[i]))
+         {
+             i++;
+         }
+         else
+         {
+             i++;
+             E();
+             if (input[i] == '(')
+             {
+                 i++;
+                 E();
+                 if (input[i] == ')')
+                     i++;
+                 else
+                     error = 1;
+             }
+             else
+             {
+                 error = 1;
+             }
+         }
+     }
+     ```
+     Represents the non-terminal F in the grammar.
+
+### Grammar Explanation:
+
+The provided C code checks whether an input string represents a valid arithmetic expression based on the given context-free grammar. The grammar represents expressions with addition, subtraction, multiplication, and division operators, as well as parentheses.
+
+- **E -> TE'**: An expression consists of a term followed by an optional expression prime.
+- **E' -> +TE' | ε**: Expression prime can be an addition followed by another term and expression prime or ε (empty).
+- **T -> FT'**: A term consists of a factor followed by an optional term prime.
+- **T' -> \*FT' | ε**: Term prime can be multiplication followed by another factor and term prime or ε.
+- **F -> (E) | id**: A factor can be an expression within parentheses or an identifier.
+
+The code uses recursive descent parsing to traverse the input string and check if it conforms to the specified grammar. If the input is accepted without errors, it prints "Accepted"; otherwise, it prints "Rejected."
+
+### Example:
+
+For the input string "id + id \* id", the output would be "Accepted." The expression follows the grammar rules, representing a valid arithmetic expression.
