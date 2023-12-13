@@ -108,3 +108,87 @@ void follow(char c) {
 The `follow` function computes the follow set for a given symbol `c`. It checks if `c` is the starting symbol, and if so, it adds '$' to the follow set. Then, it iterates through the productions to find occurrences of `c` and computes the follow set based on the next symbols in those productions.
 
 This code seems to be related to the computation of First and Follow sets in a context-free grammar.
+
+<hr />
+
+### Algorithm for Calculating First and Follow Sets:
+
+**Input:**
+
+- `n`: Number of productions
+- `a`: Array storing productions
+
+1. **Initialize:**
+
+   - Initialize variables `n`, `m`, `p`, `i`, `j`, `a`, and `f`.
+   - Create functions `first(char c)` and `follow(char c)`.
+
+2. **Input Productions:**
+
+   - Take input for the number of productions `n`.
+   - Take input for each production and store them in the array `a`.
+
+3. **Main Loop:**
+
+   - Enter a do-while loop:
+     - Set `m` to 0.
+     - Take an element `c` as input.
+
+4. **Calculate First Set:**
+
+   - Call `first(c)` function:
+     - If `c` is not an uppercase letter (terminal), add `c` to `f`.
+     - For each production starting with `c`, recursively add First sets to `f`.
+
+5. **Print First Set & Reset Variables:**
+
+   - Print the calculated First set for `c`.
+   - Reset `f` and `m`.
+
+6. **Calculate Follow Set:**
+
+   - Call `follow(c)` function:
+     - If `c` is the start symbol, add `$` to `f`.
+     - For each production with `c` on the right-hand side, update Follow set.
+
+7. **Print Follow Set:**
+
+   - Print the calculated Follow set for `c`.
+
+8. **Ask User to Continue:**
+
+   - Ask the user if they want to continue.
+   - If yes, repeat the loop; otherwise, exit.
+
+9. **End Algorithm.**
+
+### Algorithm for Function first(char c):
+
+**Input:** Non-terminal `c`
+
+1. If `c` is a terminal, add `c` to the First set (`f`).
+
+2. For each production starting with `c`:
+
+   - If the next symbol is a terminal, add it to the First set (`f`).
+   - If the next symbol is a non-terminal, recursively add its First set to `f`.
+   - If the next symbol can derive the empty string, continue to the next symbol.
+
+3. End.
+
+### Algorithm for Function follow(char c):
+
+**Input:** Non-terminal `c`
+
+1. If `c` is the start symbol, add `$` (end marker) to the Follow set (`f`).
+
+2. For each production containing `c` on the right-hand side:
+
+   - If `c` is not the last symbol, add the First set of the next symbol to the Follow set (`f`), excluding the empty string.
+   - If the next symbol's First set contains the empty string, add the Follow set of the left-hand side non-terminal to `f`.
+
+3. If `c` is on the right-hand side of any production, recursively call `follow` on the left-hand side non-terminal.
+
+4. End.
+
+This algorithm outlines the steps taken in the provided C code to calculate First and Follow sets for a given context-free grammar. The process involves traversing the productions, handling terminals and non-terminals, and updating the sets based on the grammar rules.
